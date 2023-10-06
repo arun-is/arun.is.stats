@@ -57,6 +57,11 @@ const saveResultsToFile = (filteredResults) => {
 }
 
 const createIndexHtml = () => {
+  const timestampUTC = new Date().toISOString()
+  const timestampPST = new Date().toLocaleString("en-US", {
+    timeZone: "America/Los_Angeles"
+  })
+
   const indexHtmlContent = `
       <!DOCTYPE html>
       <html lang="en">
@@ -68,6 +73,8 @@ const createIndexHtml = () => {
       <body>
         <h1>Results</h1>
         <a href="results.json">View Results</a>
+        <p>Last fetched (UTC): ${timestampUTC}</p>
+        <p>Last fetched (PST): ${timestampPST}</p>
       </body>
       </html>
     `
