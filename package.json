@@ -12,5 +12,18 @@
   "dependencies": {
     "axios": "^1.5.1",
     "dotenv": "^16.3.1"
+  },
+  "prettier": {
+    "bracketSpacing": true,
+    "jsxBracketSameLine": false,
+    "printWidth": 80,
+    "semi": false,
+    "singleQuote": false,
+    "tabWidth": 2,
+    "trailingComma": "none",
+    "proseWrap": "always"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.3"
   }
 }
