@@ -35,7 +35,9 @@ const getStatsFromPlausible = async () => {
 const filterBlogPages = (results) => {
   return results.filter(
     (result) =>
-      result.page.startsWith("/blog") && result.page !== "/blog/archive/"
+      result.page.startsWith("/blog/") &&
+      result.page !== "/blog/" &&
+      result.page !== "/blog/archive/"
   )
 }
 
