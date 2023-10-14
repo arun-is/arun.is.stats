@@ -1,4 +1,6 @@
 import fs from "fs"
+const BLOG_REGEX_PATTERN = /^\/blog\/[a-z0-9-]+\/$/
+const PREFIX_PATTERN = /^\/blog\/[a-z0-9-]+\//
 
 const readAnalyticsData = (filePath) => {
   try {
@@ -8,6 +10,55 @@ const readAnalyticsData = (filePath) => {
     console.error(`Error reading ${filePath}: ${error}`)
     return []
   }
+}
+
+const filterData = (data) => {
+  const filteredData = {}
+
+  for (const page in data) {
+    if (page.startsWith("/blog/") && page !== "/blog/") {
+      filteredData[page] = data[page]
+    }
+  }
+
+  return filteredData
+}
+
+const splitData = (filteredData) => {
+  const blogPages = {}
+  const blogPagesWithExtraCharacters = {}
+
+  for (const page in filteredData) {
+    if (BLOG_REGEX_PATTERN.test(page)) {
+      blogPages[page] = filteredData[page]
+    } else {
+      blogPagesWithExtraCharacters[page] = filteredData[page]
+    }
+  }
+
+  return { blogPages, blogPagesWithExtraCharacters }
+}
+
+const stripExtraCharacters = (page) => {
+  const pattern = PREFIX_PATTERN
+  const match = page.match(pattern)
+  return match ? match[0] : ""
+}
+
+const addBlogPagesWithExtraCharacters = ({
+  blogPages,
+  blogPagesWithExtraCharacters
+}) => {
+  for (const pageWithExtraCharacter in blogPagesWithExtraCharacters) {
+    const strippedKey = stripExtraCharacters(pageWithExtraCharacter)
+    console.log(pageWithExtraCharacter, strippedKey)
+    if (strippedKey && blogPages[strippedKey] !== undefined) {
+      blogPages[strippedKey] +=
+        blogPagesWithExtraCharacters[pageWithExtraCharacter]
+    }
+  }
+
+  return blogPages
 }
 
 const combineAnalyticsData = ({ googleAnalyticsFile, plausibleFile }) => {
@@ -58,7 +109,12 @@ const combine = ({ googleAnalyticsFile, plausibleFile, combinedFile }) => {
     plausibleFile
   })
 
-  writeCombinedDataToFile(combinedData, combinedFile)
+  const filteredData = filterData(combinedData)
+
+  const { blogPages, blogPagesWithExtraCharacters } = splitData(filteredData)
+  addBlogPagesWithExtraCharacters({ blogPages, blogPagesWithExtraCharacters })
+
+  writeCombinedDataToFile(blogPages, combinedFile)
 }
 
 export default combine
