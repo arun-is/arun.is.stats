@@ -90,6 +90,11 @@ const combineAnalyticsData = ({ googleAnalyticsFile, plausibleFile }) => {
   return combinedData
 }
 
+const sortObjectByValueDescending = (inputObject) => {
+  const sortedEntries = Object.entries(inputObject).sort((a, b) => b[1] - a[1])
+  return Object.fromEntries(sortedEntries)
+}
+
 const writeCombinedDataToFile = (combinedData, combinedFile) => {
   try {
     fs.writeFileSync(
@@ -114,7 +119,9 @@ const combine = ({ googleAnalyticsFile, plausibleFile, combinedFile }) => {
   const { blogPages, blogPagesWithExtraCharacters } = splitData(filteredData)
   addBlogPagesWithExtraCharacters({ blogPages, blogPagesWithExtraCharacters })
 
-  writeCombinedDataToFile(blogPages, combinedFile)
+  const sortedBlogPages = sortObjectByValueDescending(blogPages)
+
+  writeCombinedDataToFile(sortedBlogPages, combinedFile)
 }
 
 export default combine
