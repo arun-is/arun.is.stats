@@ -7,7 +7,7 @@ const readAnalyticsData = (filePath) => {
     const data = fs.readFileSync(filePath, "utf8")
     return JSON.parse(data)
   } catch (error) {
-    console.error(`Error reading ${filePath}: ${error}`)
+    console.trace(`Error reading ${filePath}: ${error}`)
     return []
   }
 }

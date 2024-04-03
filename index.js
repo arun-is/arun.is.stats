@@ -1,5 +1,4 @@
 import fs from "fs"
-import googleAnalytics from "./src/googleAnalytics.js"
 import html from "./src/html.js"
 import plausible from "./src/plausible.js"
 import combine from "./src/combine.js"
@@ -15,7 +14,6 @@ if (!fs.existsSync(OUTPUT_DIRECTORY)) {
   fs.mkdirSync(OUTPUT_DIRECTORY)
 }
 await plausible(PLAUSIBLE_FILE_PATH)
-await googleAnalytics(GOOGLE_ANALYTICS_FILE_PATH)
 await html(COMBINED_FILE)
 await combine({
   googleAnalyticsFile: GOOGLE_ANALYTICS_FILE_PATH,

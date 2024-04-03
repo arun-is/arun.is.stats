@@ -31,17 +31,19 @@ const getStatsFromPlausible = async () => {
   }
 }
 
-const saveResultsToFile = (status, filePath) => {
-  fs.writeFile(filePath, JSON.stringify(status, null, 2), (err) => {
-    if (err) throw new Error(`Error saving results to file: ${err}`)
-    console.log(`Plausible stats saved to ${filePath}`)
-  })
+const saveResultsToFile = (stats, filePath) => {
+  try {
+    fs.writeFileSync(filePath, JSON.stringify(stats, null, 2))
+  } catch (err) {
+    throw new Error(`Error saving results to file: ${err}`)
+  }
 }
 
 const plausible = async (outputDirectory) => {
   try {
     const stats = await getStatsFromPlausible()
     saveResultsToFile(stats, outputDirectory)
+    const fileSize = fs.statSync(outputDirectory).size
   } catch (error) {
     console.error(error.message)
   }
