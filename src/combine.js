@@ -51,7 +51,6 @@ const addBlogPagesWithExtraCharacters = ({
 }) => {
   for (const pageWithExtraCharacter in blogPagesWithExtraCharacters) {
     const strippedKey = stripExtraCharacters(pageWithExtraCharacter)
-    console.log(pageWithExtraCharacter, strippedKey)
     if (strippedKey && blogPages[strippedKey] !== undefined) {
       blogPages[strippedKey] +=
         blogPagesWithExtraCharacters[pageWithExtraCharacter]
